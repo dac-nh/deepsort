@@ -6,11 +6,12 @@ import numpy as np
 import cv2
 import tensorflow.compat.v1 as tf
 
-#tf.compat.v1.disable_eager_execution()
+# tf.compat.v1.disable_eager_execution()
 
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 if len(physical_devices) > 0:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
 
 def _run_in_batches(f, data_dict, out, batch_size):
     data_len = len(out)
@@ -28,7 +29,6 @@ def _run_in_batches(f, data_dict, out, batch_size):
 
 def extract_image_patch(image, bbox, patch_shape):
     """Extract image patch from bounding box.
-
     Parameters
     ----------
     image : ndarray
@@ -40,7 +40,6 @@ def extract_image_patch(image, bbox, patch_shape):
         (height, width). First, the `bbox` is adapted to the aspect ratio
         of the patch shape, then it is clipped at the image boundaries.
         If None, the shape is computed from :arg:`bbox`.
-
     Returns
     -------
     ndarray | NoneType
@@ -48,7 +47,6 @@ def extract_image_patch(image, bbox, patch_shape):
         :arg:`patch_shape`.
         Returns None if the bounding box is empty or fully outside of the image
         boundaries.
-
     """
     bbox = np.array(bbox)
     if patch_shape is not None:
@@ -122,7 +120,6 @@ def create_box_encoder(model_filename, input_name="images",
 
 def generate_detections(encoder, mot_dir, output_dir, detection_dir=None):
     """Generate detections with features.
-
     Parameters
     ----------
     encoder : Callable[image, ndarray] -> ndarray
@@ -137,7 +134,6 @@ def generate_detections(encoder, mot_dir, output_dir, detection_dir=None):
         Path to custom detections. The directory structure should be the default
         MOTChallenge structure: `[sequence]/det/det.txt`. If None, uses the
         standard MOTChallenge detections.
-
     """
     if detection_dir is None:
         detection_dir = mot_dir
@@ -199,11 +195,11 @@ def parse_args():
         required=True)
     parser.add_argument(
         "--detection_dir", help="Path to custom detections. Defaults to "
-        "standard MOT detections Directory structure should be the default "
-        "MOTChallenge structure: [sequence]/det/det.txt", default=None)
+                                "standard MOT detections Directory structure should be the default "
+                                "MOTChallenge structure: [sequence]/det/det.txt", default=None)
     parser.add_argument(
         "--output_dir", help="Output directory. Will be created if it does not"
-        " exist.", default="detections")
+                             " exist.", default="detections")
     return parser.parse_args()
 
 
